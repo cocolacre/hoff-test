@@ -18,8 +18,11 @@ def test_add_product_to_cart(browser):
     """
     
     url = "https://hoff.ru/catalog/ofis/domashniy_ofis/komputernye_stoly/"
+    browser.get("https://google.com")
+    time.sleep(20)
     browser.get(url)
-    time.sleep(7) #replace with EC or WAIT selenium methods.
+    browser.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+    time.sleep(777) #replace with EC or WAIT selenium methods.
     # переходим на страницу товара
     product_link = browser.find_element(By.XPATH, '//a[@href="/catalog/ofis/domashniy_ofis/komputernye_stoly/komputernyy_stol_dlya_komp_yutera/"]')
     product_link.click()
