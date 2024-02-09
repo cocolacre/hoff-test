@@ -11,3 +11,4 @@ pip install allure-pytest
 allure serve ./allure_results
 
 https://github.com/cocolacre/hoff-test
+https://www.zenrows.com/blog/undetected-chromedriver#common-errorsм
