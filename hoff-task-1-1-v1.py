@@ -2,10 +2,8 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
 
-from allure import step
+#from allure import step
 
 def test_add_product_to_cart(browser):
     """
@@ -21,32 +19,31 @@ def test_add_product_to_cart(browser):
     url = "https://hoff.ru/catalog/ofis/domashniy_ofis/komputernye_stoly/"
     browser.get(url)
 
-    # Перейти на страницу товара
+    # переходим на страницу товара
     product_link = browser.find_element(By.XPATH, '//a[@href="/catalog/ofis/domashniy_ofis/komputernye_stoly/komputernyy_stol_dlya_komp_yutera/"]')
     product_link.click()
 
-    # Проверить наличие кнопки добавления в корзину
+    # провряем наличие кнопки добавления в корзину
     add_to_cart_button = browser.find_element(By.XPATH, '//button[text()="Добавить в корзину"]')
     assert add_to_cart_button.is_enabled(), "Кнопка добавления в корзину не активна"
 
-    # Добавить товар в корзину
+    # добавм товар в корзину
     add_to_cart_button.click()
 
-    # Перейти на страницу корзины
     cart_link = browser.find_element(By.XPATH, '//a[@href="/cart/"]')
     cart_link.click()
 
-    # Проверить наличие пустого поля для ввода телефона и кнопки "Войти"
+    # наличие пустого поля для ввода телефона и кнопки "Войти"
     phone_input = browser.find_element(By.XPATH, '//input[@name="phone"]')
-    assert phone_input.get_attribute("value") == "", "Поле для ввода телефона пустое"
+    assert phone_input.get_attribute("value") == "", "Поле для ввода телефона не пустое"
 
     login_button = browser.find_element(By.XPATH, '//button[text()="Войти"]')
-    assert login_button.is_enabled(), "Кнопка Войти активна"
+    assert login_button.is_enabled(), "Кнопка Войти не активна"
 
-    # Проверить наличие 1 добавленного товара в корзине
+    # проверяем наличие 1 добавленного товара в корзине
     product_in_cart = browser.find_element(By.XPATH, '//div[@class="cart-item"]')
     assert product_in_cart.is_displayed(), "Товар не добавлен в корзину"
 
-    # Проверить стоимость товара
+    # проверяем ненулевую стоимость товара
     total_price = browser.find_element(By.XPATH, '//span[@class="total-price"]')
     assert total_price.text != "", "Поле Итого пустое"
