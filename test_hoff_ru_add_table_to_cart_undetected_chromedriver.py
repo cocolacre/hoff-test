@@ -153,8 +153,6 @@ def test_hoff_ru():
     assert total_price == price_actual, "Число в поле Итого не соответствует стоимости товара! "
     
     print("Тест успешен, задание выполнени!")
-    sys.exit()
 
 if __name__ == "__main__":
-    #dir(uc)
     test_hoff_ru()
