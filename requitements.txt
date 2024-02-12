@@ -1,0 +1,5 @@
+allure-pytest==2.13.2
+allure-python-commons==2.13.2
+pytest==8.0.0
+selenium==4.17.2
+undetected-chromedriver==3.5.4
