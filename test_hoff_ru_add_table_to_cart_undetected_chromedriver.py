@@ -9,33 +9,37 @@ import time, sys
 import undetected_chromedriver as uc # для обхода блокировки селениума сервером (ошибки 403)
 #from allure import step
 
+from locators import *
+
+
 def test_hoff_ru():
     #driver_path = "D:\\chromedriver-win64\\chromedriver.exe"
     browser = uc.Chrome()
-    url = "https://hoff.ru/catalog/ofis/domashniy_ofis/komputernye_stoly/"
-    browser.get(url)
+    #url = "https://hoff.ru/catalog/ofis/domashniy_ofis/komputernye_stoly/"
+    browser.get(HOFF_COMPUTER_TABLES_URL)
     
     # перейти к любому доступному товару
-    product_link = WebDriverWait(browser, 15).until(EC.presence_of_element_located((By.CLASS_NAME, 'product-preview')))
-    print("product_link LOADED.")
-    product_link = browser.find_element(By.CLASS_NAME, 'product-preview').get_attribute('href')
+    product_preview_element = WebDriverWait(browser, 15).until(EC.presence_of_element_located((By.CLASS_NAME, PRODUCT_PREVIEW_ELEMENT_CLASS_NAME)))
+    #print("product_link LOADED.")
+    product_link = product_preview_element.get_attribute('href')
+    #product_link = browser.find_element(By.CLASS_NAME, PRODUCT_PREVIEW_ELEMENT_CLASSNAME).get_attribute('href')
 
-    print(f"{product_link=}")
+    #print(f"{product_link=}")
     browser.get(product_link)
-    product_basket_button = WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'product-basket-button')))
+    product_basket_button = WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.CLASS_NAME, PRODUCT_BASKET_CLASS_NAME)))
     
     # цена товара для сравнения с суммой в корзине.
-    price_actual_span = browser.find_element(By.CLASS_NAME, "price-actual")
+    price_actual_span = browser.find_element(By.CLASS_NAME, PRICE_ACTUAL_CLASS_NAME)
     # извлечём цифры и сформируем цену товара в виде числа.
     price_actual = int("".join([char for char in price_actual_span.text if char.isnumeric()]))
-    print(f"{price_actual=}")
+    #print(f"{price_actual=}")
 
     # кнопка добавления товара в корзину активна ?
     assert not product_basket_button.get_attribute("disabled"), "Кнопка добавления товара в корзину не активна"
 
     # соглашаемся с выбором нашего предполагаемого города, если нужно.
     try:
-        button_decline = WebDriverWait(browser, 15).until(EC.presence_of_element_located((By.CLASS_NAME, 'decline')))
+        button_decline = WebDriverWait(browser, 15).until(EC.presence_of_element_located((By.CLASS_NAME, BUTTON_CITY_SELECTION_DECLINE_CLASS_NAME)))
         button_decline.click()
         time.sleep(2)
     except Exception as _e:
@@ -43,7 +47,7 @@ def test_hoff_ru():
     
     # соглашаемся с использованием cookie, если нужно.
     try: 
-        button_coockie_agree = WebDriverWait(browser, 15).until(EC.presence_of_element_located((By.CLASS_NAME, 'exponea-banner__btn')))
+        button_coockie_agree = WebDriverWait(browser, 15).until(EC.presence_of_element_located((By.CLASS_NAME, COOCKIE_AGREE_BUTTON_CLASS_NAME)))
         button_coockie_agree.click()
         time.sleep(2) # можно заменить на проверку кликабельности кнопки добавления товара в корзину.
     except Exception as _e:
