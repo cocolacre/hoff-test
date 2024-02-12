@@ -15,14 +15,12 @@ from locators import *
 def test_hoff_ru():
     #driver_path = "D:\\chromedriver-win64\\chromedriver.exe"
     browser = uc.Chrome()
-    #url = "https://hoff.ru/catalog/ofis/domashniy_ofis/komputernye_stoly/"
     browser.get(HOFF_COMPUTER_TABLES_URL)
     
     # перейти к любому доступному товару
     product_preview_element = WebDriverWait(browser, 15).until(EC.presence_of_element_located((By.CLASS_NAME, PRODUCT_PREVIEW_ELEMENT_CLASS_NAME)))
     #print("product_link LOADED.")
     product_link = product_preview_element.get_attribute('href')
-    #product_link = browser.find_element(By.CLASS_NAME, PRODUCT_PREVIEW_ELEMENT_CLASSNAME).get_attribute('href')
 
     #print(f"{product_link=}")
     browser.get(product_link)
@@ -41,7 +39,7 @@ def test_hoff_ru():
     try:
         button_decline = WebDriverWait(browser, 15).until(EC.presence_of_element_located((By.CLASS_NAME, BUTTON_CITY_SELECTION_DECLINE_CLASS_NAME)))
         button_decline.click()
-        time.sleep(2)
+        time.sleep(3)
     except Exception as _e:
         print(str(_e))
     
@@ -49,41 +47,37 @@ def test_hoff_ru():
     try: 
         button_coockie_agree = WebDriverWait(browser, 15).until(EC.presence_of_element_located((By.CLASS_NAME, COOCKIE_AGREE_BUTTON_CLASS_NAME)))
         button_coockie_agree.click()
-        time.sleep(2) # можно заменить на проверку кликабельности кнопки добавления товара в корзину.
+        time.sleep(3) # можно заменить на проверку кликабельности кнопки добавления товара в корзину.
     except Exception as _e:
         print(str(_e))
 
     # добавим товар в корзину.
     # replace with EC ?
-    span_basket_button_text_general = browser.find_element(By.CLASS_NAME, 'btn-text__general') 
-    basket_button_text_general = span_basket_button_text_general.text
-    #print(f"{basket_button_text_general.lower().strip()=}")
+    span_basket_button_text_general = browser.find_element(By.CLASS_NAME, ADD_TO_BASKET_BUTTON_TEXT_CLASS_NAME) 
     product_basket_button.click()
     time.sleep(5) # дадим браузеру время обновить надпись на кнопке
 
     # проверим, что товар добавлен в корзину.
-    product_basket_button = WebDriverWait(browser, 15).until(EC.presence_of_element_located((By.CLASS_NAME, 'product-basket-button')))
+    product_basket_button = WebDriverWait(browser, 15).until(EC.presence_of_element_located((By.CLASS_NAME, PRODUCT_BASKET_CLASS_NAME)))
     #print(f"BUTTON TEXT:[{product_basket_button.text=}]")
     assert product_basket_button.text == "Товар в корзине", "Текст на кнопке добавления в корзину не соответствует 'Товар в корзине', вероятно товар не добавлен в корзину."
 
     # откроем страницу корзины напрямую.
     browser.get('https://hoff.ru/basket/')
     
-
-    phone_number_input = WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'c-input__field')))
+    # присутствует пустое поле для ввода телефона?
+    phone_number_input = WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.CLASS_NAME, PHONE_INPUT_CLASS_NAME)))
     input_value = phone_number_input.get_attribute("value")
     #print(f"{input_value=}")
-    # присутствует пустое поле для ввода телефона?
     assert input_value == '', "Поле для ввода телефона не пустое!"
 
-    # TODO: Вынести локаторы в отдельный файл с константами и отрефакторить!
     # присутствует кнопка «Войти»?
-    basket_auth_button = WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'basket-auth__button')))
+    basket_auth_button = WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.CLASS_NAME, AUTH_BUTTON_CLASS_NAME)))
     basket_auth_button_text = basket_auth_button.text
     assert basket_auth_button_text.strip() == "Войти", "Отсутствует кнопка 'Войти'!" 
 
     # Теперь извлечём из DOM суммарную стоимость товаров в корзине и сравним с ценой выбранного стола.
-    basket_title = WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'basket__title')))
+    basket_title = WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.CLASS_NAME, TOTAL_GOODS_LABEL_CLASS_NAME)))
     basket_title_text = basket_title.text
     #print(f'{basket_title_text=}')
     num_added_goods = int(basket_title_text.split(" ")[0])
@@ -91,13 +85,13 @@ def test_hoff_ru():
     assert num_added_goods == 1, "В списке товаров в корзине не один товар!" # в списке товаров 1 единственный добавленный товар
 
     # В поле Итого стоимость самого товара ?
-    basket_summary_total_price = browser.find_element(By.CLASS_NAME, "basket-summary__total-price")
+    basket_summary_total_price = browser.find_element(By.CLASS_NAME, BASKET_TOTAL_PRICE_CLASS_NAME)
     total_price_span = basket_summary_total_price.find_element(By.TAG_NAME, "span")
     total_price = int(total_price_span.text.replace(" ",""))
     #print(f"{total_price=}")
     assert total_price == price_actual, "Число в поле Итого не соответствует стоимости товара! "
     
-    print("Тест успешен, задание выполнени!")
+    print("Тест успешен, задание 1.1 выполнено.")
 
 if __name__ == "__main__":
     test_hoff_ru()

@@ -16,6 +16,8 @@ test task for Hoff
 
     scoop install allure
 
-Проверено на Windows 10, Python 3.10.9
+Проверено на Windows 10, Python 3.10.9.
 
 Тест можно запустить просто командой pytest.
+
+![passed](passed.png)
