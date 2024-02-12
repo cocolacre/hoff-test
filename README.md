@@ -21,3 +21,11 @@ test task for Hoff
 Тест можно запустить просто командой pytest.
 
 ![passed](passed.png)
+
+Для тестирования с отчётом allure:
+
+    pytest --alluredir=allureReports
+
+    allure serve allureReports
+
+![allure](allure.png)
