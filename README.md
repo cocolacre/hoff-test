@@ -28,4 +28,5 @@ test task for Hoff
 
     allure serve allureReports
 
-![allure](allure.png)
+![allure](allure.png)ECHO is on.
+!code_style_defects.png![code_style_defects.png] 
