@@ -28,5 +28,14 @@ test task for Hoff
 
     allure serve allureReports
 
-![allure](allure.png)ECHO is on.
-!code_style_defects.png![code_style_defects.png] 
+![allure](allure.png)
+
+TODO:
+
+1) Appium.
+
+2) Linting.
+
+3) More tests for hoff.ru (probably with Page Object Model).
+
+![code_style_defects][code_style_defects.png).
