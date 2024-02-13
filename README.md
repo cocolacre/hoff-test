@@ -38,4 +38,5 @@ TODO:
 
 3) More tests for hoff.ru (probably with Page Object Model).
 
-![code_style_defects][code_style_defects.png).
+![code_style_defects.png](code_style_defects.png)
+
